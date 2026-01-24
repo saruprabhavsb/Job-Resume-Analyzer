@@ -101,22 +101,8 @@ const Analysis = () => {
         <section className="py-16 gradient-hero-bg">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              {/* Header */}
-              <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-success/10 border border-success/20 mb-4">
-                  <CheckCircle className="w-4 h-4 text-success" />
-                  <span className="text-sm font-medium text-success">Analysis Complete</span>
-                </div>
-                <h1 className="text-4xl font-bold mb-4">
-                  Resume <span className="gradient-text">Analysis Results</span>
-                </h1>
-                <p className="text-muted-foreground">
-                  Our AI has extracted the following information from your resume.
-                </p>
-              </div>
-
               {/* Extracted Data Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 {/* Skills */}
                 <div className="bg-card rounded-2xl p-6 border border-border shadow-card">
                   <div className="flex items-center gap-3 mb-4">
@@ -175,14 +161,16 @@ const Analysis = () => {
               </div>
 
               {/* Keywords */}
-              <div className="bg-card rounded-2xl p-6 border border-border shadow-card mb-12">
-                <h3 className="text-lg font-semibold mb-4">Key Highlights</h3>
+              <div className="bg-card rounded-2xl p-6 border border-border shadow-card mb-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-semibold">Keywords</h3>
+                </div>
                 <div className="flex flex-wrap gap-2">
                   {extractedData.keywords.map((keyword) => (
-                    <span
-                      key={keyword}
-                      className="px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-secondary/10 text-foreground font-medium text-sm border border-primary/20"
-                    >
+                    <span key={keyword} className="skill-tag skill-tag-neutral">
                       {keyword}
                     </span>
                   ))}
