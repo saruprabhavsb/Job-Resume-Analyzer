@@ -113,7 +113,7 @@ const Analysis = () => {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {extractedData.skills.map((skill) => (
-                      <span key={skill} className="skill-tag skill-tag-neutral">
+                      <span key={skill} className="skill-tag skill-tag-match">
                         {skill}
                       </span>
                     ))}

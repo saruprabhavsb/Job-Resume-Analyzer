@@ -87,7 +87,7 @@ const JobDetails = () => {
                         </div>
                         <div>
                           <p className="text-xs text-muted-foreground">Salary</p>
-                          <p className="font-medium">$80K - $120K</p>
+                          <p className="font-medium">₹66L - ₹1Cr</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
