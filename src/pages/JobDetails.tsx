@@ -5,6 +5,27 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { CircularProgress } from "@/components/shared/CircularProgress";
 
+// USD to INR conversion (approximate rate)
+const USD_TO_INR = 83;
+
+const formatSalaryINR = (salaryUSD?: { min: number; max: number }) => {
+  if (!salaryUSD) return "Competitive";
+  
+  const minINR = salaryUSD.min * USD_TO_INR;
+  const maxINR = salaryUSD.max * USD_TO_INR;
+  
+  const formatAmount = (amount: number) => {
+    if (amount >= 10000000) {
+      return `₹${(amount / 10000000).toFixed(1)}Cr`;
+    } else if (amount >= 100000) {
+      return `₹${(amount / 100000).toFixed(0)}L`;
+    }
+    return `₹${amount.toLocaleString('en-IN')}`;
+  };
+  
+  return `${formatAmount(minINR)} - ${formatAmount(maxINR)}`;
+};
+
 const JobDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -69,7 +90,7 @@ const JobDetails = () => {
                         </div>
                         <div>
                           <p className="text-xs text-muted-foreground">Company</p>
-                          <p className="font-medium">TechCorp Inc.</p>
+                          <p className="font-medium">{role.company || "Company Name"}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
@@ -78,7 +99,7 @@ const JobDetails = () => {
                         </div>
                         <div>
                           <p className="text-xs text-muted-foreground">Location</p>
-                          <p className="font-medium">San Francisco, CA</p>
+                          <p className="font-medium">{role.location || "Remote"}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
@@ -87,7 +108,7 @@ const JobDetails = () => {
                         </div>
                         <div>
                           <p className="text-xs text-muted-foreground">Salary</p>
-                          <p className="font-medium">₹66L - ₹1Cr</p>
+                          <p className="font-medium">{formatSalaryINR(role.salaryUSD)}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
@@ -96,7 +117,7 @@ const JobDetails = () => {
                         </div>
                         <div>
                           <p className="text-xs text-muted-foreground">Experience</p>
-                          <p className="font-medium">0-2 years</p>
+                          <p className="font-medium">{role.experience || "Entry Level"}</p>
                         </div>
                       </div>
                     </div>
