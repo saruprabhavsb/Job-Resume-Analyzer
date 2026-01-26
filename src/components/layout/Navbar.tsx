@@ -37,7 +37,7 @@ export function Navbar() {
               <Brain className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="hidden sm:block font-semibold text-foreground text-sm lg:text-base">
-              AI Resume Analyzer
+              AI Resume Analyzer & Job Matcher
             </span>
           </Link>
 
