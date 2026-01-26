@@ -5,8 +5,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 
-// Simulated extracted data
-const extractedData = {
+// Default/fallback extracted data
+const defaultExtractedData = {
   skills: ["Java", "SQL", "HTML", "CSS", "JavaScript", "React", "Git", "REST APIs"],
   experience: "Fresher (0-1 years)",
   education: "B.E – Electronics & Communication Engineering",
@@ -14,11 +14,22 @@ const extractedData = {
   keywords: ["Full Stack", "Web Development", "Problem Solving", "Agile", "Team Collaboration"],
 };
 
+interface ExtractedData {
+  skills: string[];
+  experience: string;
+  education: string;
+  tools: string[];
+  keywords: string[];
+}
+
 const Analysis = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isAnalyzing, setIsAnalyzing] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
+  
+  // Get extracted data from navigation state or use default
+  const extractedData: ExtractedData = location.state?.extractedData || defaultExtractedData;
 
   const analysisSteps = [
     "Parsing document...",
@@ -34,17 +45,21 @@ const Analysis = () => {
       return;
     }
 
-    // Simulate analysis process
+    // If we have real extracted data, speed up the animation
+    const hasRealData = !!location.state?.extractedData;
+    const stepDelay = hasRealData ? 400 : 800;
+
+    // Simulate analysis process (faster if data is already parsed)
     const interval = setInterval(() => {
       setCurrentStep((prev) => {
         if (prev >= analysisSteps.length - 1) {
           clearInterval(interval);
-          setTimeout(() => setIsAnalyzing(false), 500);
+          setTimeout(() => setIsAnalyzing(false), 300);
           return prev;
         }
         return prev + 1;
       });
-    }, 800);
+    }, stepDelay);
 
     return () => clearInterval(interval);
   }, [location.state, navigate]);
