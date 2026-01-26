@@ -1,18 +1,21 @@
 import { useState, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Upload, FileText, X, ArrowRight, CheckCircle } from "lucide-react";
+import { Upload, FileText, X, ArrowRight, CheckCircle, AlertCircle } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { jobRoles } from "@/data/jobRoles";
 import { cn } from "@/lib/utils";
+import { useResumeParser } from "@/hooks/useResumeParser";
+import { toast } from "sonner";
 
 const UploadResume = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const selectedRoleId = searchParams.get("role");
   const selectedRole = jobRoles.find(r => r.id === selectedRoleId);
+  const { parseResume, isLoading: isParsing, error: parseError } = useResumeParser();
 
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -55,14 +58,32 @@ const UploadResume = () => {
     
     setIsUploading(true);
     
-    // Simulate upload progress
-    for (let i = 0; i <= 100; i += 10) {
-      await new Promise(resolve => setTimeout(resolve, 150));
+    // Show upload progress
+    for (let i = 0; i <= 50; i += 10) {
+      await new Promise(resolve => setTimeout(resolve, 100));
       setUploadProgress(i);
     }
     
-    // Navigate to analysis page
-    navigate("/analysis", { state: { file: file.name, role: selectedRole } });
+    // Parse the resume using AI
+    const parsedData = await parseResume(file);
+    
+    setUploadProgress(100);
+    
+    if (parsedData) {
+      toast.success("Resume parsed successfully!");
+      // Navigate to analysis page with real parsed data
+      navigate("/analysis", { 
+        state: { 
+          file: file.name, 
+          role: selectedRole,
+          extractedData: parsedData 
+        } 
+      });
+    } else {
+      toast.error(parseError || "Failed to parse resume. Please try again.");
+      setIsUploading(false);
+      setUploadProgress(0);
+    }
   };
 
   const removeFile = () => {
